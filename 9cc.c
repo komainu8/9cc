@@ -29,6 +29,14 @@ void error(char *fmt, ...)
   exit(1);
 }
 
+bool consume(char op)
+{
+  if (token->kind != TK_RESERVED || token->str[0] != op)
+    return false;
+  token = token->next;
+  return true;
+}
+
 int main(int argc, char **argv)
 {
   if (argc != 2) {

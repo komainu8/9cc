@@ -37,6 +37,24 @@ bool consume(char op)
   return true;
 }
 
+void expect_symbol(char op) {
+  if (token->kind != TK_RESERVED || token->str[0] != op)
+    error("'%c'ではありません。", op);
+  token = token->next;
+}
+
+int expect_number() {
+  if (token->kind != TK_NUM)
+    error("数ではありません");
+  int val = token->val;
+  token = token->next;
+  return val;
+}
+
+bool at_eof() {
+  return token->kind == TK_EOF;
+}
+
 int main(int argc, char **argv)
 {
   if (argc != 2) {

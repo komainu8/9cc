@@ -55,6 +55,14 @@ bool at_eof() {
   return token->kind == TK_EOF;
 }
 
+Token *new_token(TokenKind kind, Token *cur, char *str) {
+  Token *tok = calloc(1, sizeof(Token));
+  tok->kind = kind;
+  tok->str = str;
+  cur->next = tok;
+  return tok;
+}
+
 int main(int argc, char **argv)
 {
   if (argc != 2) {

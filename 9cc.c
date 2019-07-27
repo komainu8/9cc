@@ -63,6 +63,35 @@ Token *new_token(TokenKind kind, Token *cur, char *str) {
   return tok;
 }
 
+Token *tokenize(char *p) {
+  Token head;
+  head.next = NULL;
+  Token *cur = &head;
+
+  while (*p) {
+    if (isspace(*p)) {
+      p++;
+      continue;
+    }
+
+    if (*p == '+' || *p == '-') {
+      cur = new_token(TK_RESERVED, cur, p++);
+      continue;
+    }
+
+    if (isdigit(*p)) {
+      cur = new_token(TK_NUM, cur, p);
+      cur->val = strtol(p, &p, 10);
+      continue;
+    }
+
+    error("トークナイズできません。");
+  }
+
+  new_token(TK_EOF, cur, p);
+  return head.next;
+}
+
 int main(int argc, char **argv)
 {
   if (argc != 2) {

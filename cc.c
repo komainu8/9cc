@@ -6,7 +6,8 @@ typedef enum {
   TOKEN_SYMBOL,
   TOKEN_NUMBER,
   TOKEN_EOL,    // End of line
-} TokenKund;
+} TokenKind;
+
 
 int main(int argc, char **argv) {
   if (argc != 2) {

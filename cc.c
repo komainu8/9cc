@@ -8,6 +8,16 @@ typedef enum {
   TOKEN_EOL,    // End of line
 } TokenKind;
 
+typedef struct Token Token;
+
+struct Token {
+  TokenKind kind;
+  Token *next;
+  int value;
+  char *string;
+} Token;
+
+Token *token;
 
 int main(int argc, char **argv) {
   if (argc != 2) {

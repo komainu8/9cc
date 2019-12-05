@@ -60,6 +60,35 @@ Token *create_new_token(TokenKind kind, Token *current, char *string) {
   return token;
 }
 
+Token *tokenize(char *p) {
+  Token head;
+  head.next = NULL;
+  Token *current = &head;
+
+  while(*p) {
+    if (isspace(*p)) {
+      p++;
+      continue;
+    }
+
+    if (*p == '+' || *p == '-') {
+      current = create_new_token(TOKEN_SYMBOL, current, p++);
+      continue
+    }
+
+    if (isdigit(*p)) {
+      current = create_new_token(TOKEN_NUMBER, current, p);
+      current->value = strtol(p, &p, 10);
+      continue;
+    }
+
+    error("'%c' can not tokenize.", p);
+  }
+
+  create_new_token(TOKEN_EOL, current, p);
+  return head.next;
+}
+
 int main(int argc, char **argv) {
   if (argc != 2) {
     fprintf(stderr, "Invalid number of arguments.\n");

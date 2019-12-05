@@ -25,7 +25,7 @@ Token *token;
 void error(char *format, ...) {
   va_list ap;
   va_start(ap, format);
-  vfprint(stderr, format, ap);
+  vfprintf(stderr, format, ap);
   fprintf(stderr, "\n");
   exit(1);
 }
@@ -38,7 +38,7 @@ bool consume(char operator) {
 }
 
 void expect(char operator) {
-  if (token->kind != TOKEN_SYMBOL || token->str[0] != operator)
+  if (token->kind != TOKEN_SYMBOL || token->string[0] != operator)
     error("This is not a '%c'", operator);
   token = token->next;
 }
@@ -76,7 +76,7 @@ Token *tokenize(char *p) {
 
     if (*p == '+' || *p == '-') {
       current = create_new_token(TOKEN_SYMBOL, current, p++);
-      continue
+      continue;
     }
 
     if (isdigit(*p)) {

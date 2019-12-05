@@ -1,5 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdarg.h>
+#include <stdbool.h>
+#include <ctype.h>
 
 //Kind of token
 typedef enum {

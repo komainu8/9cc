@@ -52,6 +52,14 @@ bool iseol() {
   return token->kind == TOKEN_EOL;
 }
 
+Token *create_new_token(TokenKind kind, Token *current, char *string) {
+  Token *token = calloc(1, sizeof(Token));
+  token->kind = kind;
+  token->string = string;
+  current->next = token;
+  return token;
+}
+
 int main(int argc, char **argv) {
   if (argc != 2) {
     fprintf(stderr, "Invalid number of arguments.\n");

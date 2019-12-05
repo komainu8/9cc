@@ -40,6 +40,14 @@ void expect(char operator) {
   token = token->next;
 }
 
+int expect_number() {
+  if (token->kind != TOKEN_NUMBER)
+    error("This is not a number");
+  int val = token->value;
+  token = token->next;
+  return val;
+}
+
 int main(int argc, char **argv) {
   if (argc != 2) {
     fprintf(stderr, "Invalid number of arguments.\n");

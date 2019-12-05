@@ -27,6 +27,19 @@ void error(char *format, ...) {
   exit(1);
 }
 
+bool consume(char operator) {
+  if (token->kind != TOKEN_SYMBOL || token->string[0] != operator)
+    return false;
+  token = token->next;
+  return true;
+}
+
+void expect(char operator) {
+  if (token->kind != TOKEN_SYMBOL || token->str[0] != operator)
+    error("This is not a '%c'", operator);
+  token = token->next;
+}
+
 int main(int argc, char **argv) {
   if (argc != 2) {
     fprintf(stderr, "Invalid number of arguments.\n");

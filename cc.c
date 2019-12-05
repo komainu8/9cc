@@ -19,6 +19,14 @@ struct Token {
 
 Token *token;
 
+void error(char *format, ...) {
+  va_list ap;
+  va_start(ap, format);
+  vfprint(stderr, format, ap);
+  fprintf(stderr, "\n");
+  exit(1);
+}
+
 int main(int argc, char **argv) {
   if (argc != 2) {
     fprintf(stderr, "Invalid number of arguments.\n");

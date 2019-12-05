@@ -18,7 +18,7 @@ struct Token {
   Token *next;
   int value;
   char *string;
-} Token;
+};
 
 Token *token;
 

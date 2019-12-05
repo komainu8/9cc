@@ -48,6 +48,10 @@ int expect_number() {
   return val;
 }
 
+bool iseol() {
+  return token->kind == TOKEN_EOL;
+}
+
 int main(int argc, char **argv) {
   if (argc != 2) {
     fprintf(stderr, "Invalid number of arguments.\n");

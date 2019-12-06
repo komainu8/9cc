@@ -37,14 +37,6 @@ void error_at(char *loc, char *fmt, ...) {
   exit(1);
 }
 
-void error(char *format, ...) {
-  va_list ap;
-  va_start(ap, format);
-  vfprintf(stderr, format, ap);
-  fprintf(stderr, "\n");
-  exit(1);
-}
-
 bool consume(char operator) {
   if (token->kind != TOKEN_SYMBOL || token->string[0] != operator)
     return false;

@@ -54,13 +54,13 @@ bool consume(char operator) {
 
 void expect(char operator) {
   if (token->kind != TOKEN_SYMBOL || token->string[0] != operator)
-    error("This is not a '%c'", operator);
+    error_at(token->string, "This is not a operator");
   token = token->next;
 }
 
 int expect_number() {
   if (token->kind != TOKEN_NUMBER)
-    error("This is not a number");
+    error_at(token->string, "This is not a number");
   int val = token->value;
   token = token->next;
   return val;
@@ -100,7 +100,7 @@ Token *tokenize(char *p) {
       continue;
     }
 
-    error("'%c' can not tokenize.", p);
+    error_at(token->string, "Can not tokenize.");
   }
 
   create_new_token(TOKEN_EOL, current, p);

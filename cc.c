@@ -4,6 +4,23 @@
 #include <stdbool.h>
 #include <ctype.h>
 
+typedef enum {
+  NODE_ADD, // +
+  NODE_SUB, // -
+  NODE_MUL, // *
+  NODE_DIV, // /
+  NODE_NUM, // Integer
+} NodeKind;
+
+typedef struct Node Node;
+
+struct Node {
+  NodeKind kind;
+  Node *lhs;
+  Node *rhs;
+  int val;
+};
+
 //Kind of token
 typedef enum {
   TOKEN_SYMBOL,

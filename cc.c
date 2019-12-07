@@ -21,23 +21,6 @@ struct Node {
   int val;
 };
 
-Node *new_node(Nodekind kind, Node *lhs, Node* rhs) {
-  Node *node = calloc(1, sizeof(Node));
-  node->kind = kind;
-  node->lhs = lhs;
-  node->rhs = rhs;
-
-  return node;
-}
-
-Node *new_node_num(int val) {
-  Node *node = calloc(1, sizeof(Node));
-  node->kind = NODE_NUM;
-  node->val = val;
-
-  return node;
-}
-
 //Kind of token
 typedef enum {
   TOKEN_SYMBOL,
@@ -132,6 +115,62 @@ Token *tokenize(char *p) {
   create_new_token(TOKEN_EOL, current, p);
   return head.next;
 }
+
+Node *new_node(Nodekind kind, Node *lhs, Node* rhs) {
+  Node *node = calloc(1, sizeof(Node));
+  node->kind = kind;
+  node->lhs = lhs;
+  node->rhs = rhs;
+
+  return node;
+}
+
+Node *new_node_num(int val) {
+  Node *node = calloc(1, sizeof(Node));
+  node->kind = NODE_NUM;
+  node->val = val;
+
+  return node;
+}
+
+Node *mul() {
+  Node *node = primary();
+
+  for (;;) {
+    if (consume('*')) {
+      node = new_node(NODE_MUL, node, primary());
+    } else if(consume('-')) {
+      node = new_node(NODE_DIV, node, primary());
+    } else {
+      return node;
+    }
+  }
+}
+
+Node *primary() {
+  if (consume('(')) {
+    Node *node = expr();
+    expect(')');
+    return node;
+  }
+
+  return new_node_num(expect_number());
+}
+
+Node *expr() {
+  Node *node = mul();
+
+  for (;;) {
+    if (consume('+')) {
+      node = new_node(NODE_ADD, node, mul());
+    } else if (consume('-')) {
+      node = new_node(NODE_SUB, node, mul());
+    } else {
+      return node;
+    }
+  }
+}
+
 
 int main(int argc, char **argv) {
   if (argc != 2) {

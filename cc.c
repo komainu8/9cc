@@ -70,6 +70,37 @@ void error_at(char *loc, char *fmt, ...) {
   exit(1);
 }
 
+void gen(Node *node) {
+  if (node->kind == NODE_NUM) {
+    printf("  push %d\n", node->val);
+    return;
+  }
+
+  gen(node->lhs);
+  gen(node->rhs);
+
+  printf("  pop rdi\n");
+  printf("  pop rax\n");
+
+  switch (node->kind) {
+  case NODE_ADD:
+    printf("  add rax, rdi\n");
+    break;
+  case NODE_SUB:
+    printf("  sub rax, rdi\n");
+    break;
+  case NODE_MUL:
+    printf("  imul rax, rdi\n");
+    break;
+  case NODE_DIV:
+    printf("  cqo\n");
+    printf("  idiv rdi\n");
+    break;
+  }
+
+  printf("  push rax\n");
+}
+
 bool consume(char operator) {
   if (token->kind != TOKEN_SYMBOL || token->string[0] != operator)
     return false;
@@ -149,14 +180,14 @@ Node *new_node_num(int val) {
   return node;
 }
 
-Node *mul() {
-  Node *node = primary();
+Node *expr() {
+  Node *node = mul();
 
   for (;;) {
-    if (consume('*')) {
-      node = new_node(NODE_MUL, node, primary());
-    } else if(consume('-')) {
-      node = new_node(NODE_DIV, node, primary());
+    if (consume('+')) {
+      node = new_node(NODE_ADD, node, mul());
+    } else if (consume('-')) {
+      node = new_node(NODE_SUB, node, mul());
     } else {
       return node;
     }
@@ -173,20 +204,19 @@ Node *primary() {
   return new_node_num(expect_number());
 }
 
-Node *expr() {
-  Node *node = mul();
+Node *mul() {
+  Node *node = primary();
 
   for (;;) {
-    if (consume('+')) {
-      node = new_node(NODE_ADD, node, mul());
-    } else if (consume('-')) {
-      node = new_node(NODE_SUB, node, mul());
+    if (consume('*')) {
+      node = new_node(NODE_MUL, node, primary());
+    } else if(consume('-')) {
+      node = new_node(NODE_DIV, node, primary());
     } else {
       return node;
     }
   }
 }
-
 
 int main(int argc, char **argv) {
   if (argc != 2) {

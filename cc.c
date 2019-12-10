@@ -41,6 +41,22 @@ Token *token;
 
 char *user_input;
 
+Node *mul(void);
+void error_at(char *loc, char *fmt, ...);
+void gen(Node *node);
+bool consume(char operator);
+void expect(char operator);
+int expect_number(void);
+bool iseol(void);
+Token *create_new_token(TokenKind kind, Token *current, char *string);
+Token *tokenize(char *p);
+Node *new_node(NodeKind kind, Node *lhs, Node* rhs);
+Node *new_node_num(int val);
+Node *expr(void);
+Node *primary(void);
+Node *mul(void);
+
+
 void error_at(char *loc, char *fmt, ...) {
   va_list ap;
   va_start(ap, fmt);

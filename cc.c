@@ -132,7 +132,7 @@ Token *tokenize(char *p) {
   return head.next;
 }
 
-Node *new_node(Nodekind kind, Node *lhs, Node* rhs) {
+Node *new_node(NodeKind kind, Node *lhs, Node* rhs) {
   Node *node = calloc(1, sizeof(Node));
   node->kind = kind;
   node->lhs = lhs;
